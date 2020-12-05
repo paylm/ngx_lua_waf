@@ -1,6 +1,5 @@
 ##ngx_lua_waf
 
-ngx_lua_waf是我刚入职趣游时候开发的一个基于ngx_lua的web应用防火墙。
 
 代码很简单，开发初衷主要是使用简单，高性能和轻量级。
 
@@ -25,22 +24,31 @@ ngx_lua如果是0.9.2以上版本，建议正则过滤函数改为ngx.re.find，
 
 ###使用说明：
 
-nginx安装路径假设为:/usr/local/nginx/conf/
 
-把ngx_lua_waf下载到conf目录下,解压命名为waf
+nginx安装路径假设为:/usr/local/openresty/nginx/conf/
 
+把ngx_lua_waf下载到conf目录下,解压命名为luawaf
+
++ 方式1
+``
 在nginx.conf的http段添加
 
-		lua_package_path "/usr/local/nginx/conf/waf/?.lua";
+		lua_package_path "/usr/local/openresty/nginx/conf/luawaf/?.lua";
         lua_shared_dict limit 10m;
-        init_by_lua_file  /usr/local/nginx/conf/waf/init.lua; 
-    	access_by_lua_file /usr/local/nginx/conf/waf/waf.lua;
+        init_by_lua_file  /usr/local/openresty/nginx/conf/luawaf/init.lua; 
+    	access_by_lua_file /usr/local/openresty/nginx/conf/luawaf/waf.lua;
 
 配置config.lua里的waf规则目录(一般在waf/conf/目录下)
 
-        RulePath = "/usr/local/nginx/conf/waf/wafconf/"
+        RulePath = "/usr/local/openresty/nginx/conf/luawaf/wafconf/"
 
 绝对路径如有变动，需对应修改
+``
+方式2
+``
+在nginx.conf的http段添加 
+       include luawaf/lua.conf;
+``
 
 然后重启nginx即可
 
@@ -120,19 +128,5 @@ nginx安装路径假设为:/usr/local/nginx/conf/
 
 ## Copyright
 
-<table>
-  <tr>
-    <td>Weibo</td><td>神奇的魔法师</td>
-  </tr>
-  <tr>
-    <td>Forum</td><td>http://bbs.linuxtone.org/</td>
-  </tr>
-  <tr>
-    <td>Copyright</td><td>Copyright (c) 2013- loveshell</td>
-  </tr>
-  <tr>
-    <td>License</td><td>MIT License</td>
-  </tr>
-</table>
 	
 感谢ngx_lua模块的开发者[@agentzh](https://github.com/agentzh/),春哥是我所接触过开源精神最好的人

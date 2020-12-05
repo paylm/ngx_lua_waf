@@ -105,8 +105,14 @@ function Set (list)
   return set
 end
 function args()
+	local args,err = ngx.req.get_uri_args()
+	if err == "truncated" then
+		-- one can choose to ignore or reject the current request here
+		-- truncated case deny access
+		return true
+	end
+
     for _,rule in pairs(argsrules) do
-        local args = ngx.req.get_uri_args()
         for key, val in pairs(args) do
             if type(val)=='table' then
                  local t={}

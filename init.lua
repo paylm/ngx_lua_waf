@@ -30,15 +30,11 @@ function write(logfile,msg)
 end
 function log(method,url,data,ruletag)
     if attacklog then
-        local realIp = getClientIp()
-        local ua = ngx.var.http_user_agent
+	    local realIp = getClientIp()
+        local ua = ngx.var.http_user_agent or "-"
         local servername=ngx.var.server_name
-        local time=ngx.localtime()
-        if ua  then
-            line = realIp.." ["..time.."] \""..method.." "..servername..url.."\" \""..data.."\"  \""..ua.."\" \""..ruletag.."\"\n"
-        else
-            line = realIp.." ["..time.."] \""..method.." "..servername..url.."\" \""..data.."\" - \""..ruletag.."\"\n"
-        end
+        local referer=ngx.var.http_referer or "-"
+        local time=ngx.localtime()        local line = realIp.."##"..time.."##"..method.."##"..url.."##"..servername.."##"..referer.."##"..data.."##"..ua.."##"..ruletag.."##\n"
         local filename = logpath..'/'..servername.."_"..ngx.today().."_sec.log"
         write(filename,line)
     end
